@@ -1,0 +1,8 @@
+select Employee_FirstName , Employee_LastName , Count(OrderID) as Number_Of_Orders from 
+   (
+     select Employees.FirstName as Employee_FirstName , Employees.LastName as Employee_LastName , Orders.OrderID 
+     from Employees 
+     inner Join Orders on Employees.EmployeeID = Orders.EmployeeID
+   )
+group by Employee_FirstName , Employee_LastName
+Order by Number_Of_Orders desc
