@@ -1,0 +1,20 @@
+select Employee_FirstName , Employee_LastName , Sold_Most_Beverages from
+  ( 
+   select Employee_FirstName ,Employee_LastName , CategoryName, sum(Quantity) as Sold_Most_Beverages from
+    ( 
+
+      SELECT [Employees].FirstName as Employee_FirstName ,[Employees].LastName as Employee_LastName , [Orders].OrderID , 
+      [OrderDetails].Quantity , [Products].Price  , [OrderDetails].ProductID , [Products].CategoryID ,
+      [Categories].CategoryName
+
+      from Employees 
+
+      inner join Orders on [Employees].EmployeeID = Orders.EmployeeID
+      inner join OrderDetails on  Orders.OrderID = OrderDetails.OrderID
+      inner join Products on OrderDetails.ProductID = Products.ProductID
+      inner join Categories on Products.CategoryID =Categories.CategoryID 
+    )
+   group by Employee_FirstName ,Employee_LastName ,CategoryName  
+  )
+where CategoryName like "Bev%"
+order by Sold_Most_Beverages desc
